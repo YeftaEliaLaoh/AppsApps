@@ -10,5 +10,4 @@ urlpatterns = [
     path('bookcategory/', views.bookCategory_list),
     path('bookcategory/<int:pk>/', views.bookCategory_detail),
     path('perpustakaan/retrieveall/', views.retrieveall),
-
 ]

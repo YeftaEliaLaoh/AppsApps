@@ -4,8 +4,46 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework import generics
-from .serializer import BookCategorySerializer, LanguageSerializer, PublisherSerializer,  BooksSerializer
-from .models import BookCategory, BookMappingAuthor, Language, Publisher, Books
+from .serializer import AuthorSerializer, BookCategorySerializer, LanguageSerializer, PublisherSerializer,  BooksSerializer
+from .models import Author, BookCategory, Language, Publisher, Books, BookMappingAuthor
+
+@csrf_exempt
+def author_list(request):
+	if request.method == 'GET':
+		author = Author.objects.all()
+		serializer = AuthorSerializer(author, many=True)
+		return JsonResponse(serializer.data, safe=False)
+
+	elif request.method == 'POST':
+		data = JSONParser().parse(request)
+		serializer = AuthorSerializer(data=data)
+		if serializer.is_valid():
+			serializer.save()
+			return JsonResponse(serializer.data, status=201)
+		return JsonResponse(serializer.errors, status=400)
+
+@csrf_exempt
+def author_detail(request, pk):
+	try:
+		author = Author.objects.get(pk=pk)
+	except Author.DoesNotExist:
+		return HttpResponse(status=404)
+
+	if request.method == 'GET':
+		serializer = AuthorSerializer(author)
+		return JsonResponse(serializer.data)
+
+	elif request.method == 'PUT':
+		data = JSONParser().parse(request)
+		serializer = AuthorSerializer(author, data=data)
+		if serializer.is_valid():
+			serializer.save()
+			return JsonResponse(serializer.data)
+		return JsonResponse(serializer.errors, status=400)
+
+	elif request.method == 'DELETE':
+		author.delete()
+		return HttpResponse(status=204)
 
 @csrf_exempt
 def bookCategory_list(request):
@@ -88,7 +126,7 @@ def language_detail(request, pk):
 	elif request.method == 'DELETE':
 		language.delete()
 		return HttpResponse(status=204)
-		
+
 @csrf_exempt
 def publisher_list(request):
 	if request.method == 'GET':

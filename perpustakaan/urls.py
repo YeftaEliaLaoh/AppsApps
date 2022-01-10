@@ -3,6 +3,8 @@ from .views import BooksCreateApi,BooksApi,BooksUpdateApi,BooksDeleteApi
 from perpustakaan import views
 
 urlpatterns = [
+    path('authors/', views.author_list),
+    path('author/<int:pk>/', views.author_detail),
     path('bookcategories/', views.bookCategory_list),
     path('bookcategory/<int:pk>/', views.bookCategory_detail),
     path('languages/', views.language_list),

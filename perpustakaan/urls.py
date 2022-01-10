@@ -7,7 +7,10 @@ urlpatterns = [
     path('book/create',BooksCreateApi.as_view()),
     path('book/<int:pk>',BooksUpdateApi.as_view()),
     path('book/delete/<int:pk>',BooksDeleteApi.as_view()),
-    path('bookcategory/', views.bookCategory_list),
+    path('bookcategories/', views.bookCategory_list),
     path('bookcategory/<int:pk>/', views.bookCategory_detail),
-    path('perpustakaan/retrieveall/', views.retrieveall),
+    path('publishers/', views.publisher_list),
+    path('publisher/<int:pk>/', views.publisher_detail),
+    path('retrieveall/', views.books_retrieveall),
+    path('listsubmissions/<int:pk>/', views.book_listsubmissions),
 ]

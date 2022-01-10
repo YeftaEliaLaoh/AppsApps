@@ -21,5 +21,5 @@ class UserSubmissions(models.Model):
     updatedby = models.CharField(max_length=10)
     approveddate = models.DateField(null=True, blank=True)
     canceldate = models.DateField(null=True, blank=True)
-    createddate = models.DateField(null=True, blank=True)
+    createddate = models.DateField(default=now)
     deleteddate = models.DateField(null=True, blank=True)

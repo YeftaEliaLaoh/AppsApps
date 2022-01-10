@@ -1,6 +1,11 @@
 from django.db import models
 from django.utils.timezone import now
 
+class Author(models.Model):
+    name = models.CharField(max_length=255)
+    createddate = models.DateField(default=now)
+    updateddate = models.DateTimeField(null=True)
+    
 class BookCategory(models.Model):
     name = models.CharField(max_length=255)
     createddate = models.DateTimeField(default=now)
@@ -9,12 +14,12 @@ class BookCategory(models.Model):
     class Meta:
         ordering = ['id']
 
-class Publisher(models.Model):
+class Language(models.Model):
     name = models.CharField(max_length=255)
     createddate = models.DateField(default=now)
     updateddate = models.DateTimeField(null=True)
 
-class Language(models.Model):
+class Publisher(models.Model):
     name = models.CharField(max_length=255)
     createddate = models.DateField(default=now)
     updateddate = models.DateTimeField(null=True)
@@ -41,6 +46,12 @@ class Books(models.Model):
     class Meta:
         ordering = ['id']
 
+class BookMappingAuthor(models.Model):
+    idbook = models.ForeignKey(Books, on_delete=models.CASCADE, null=True)
+    idauthor = models.ForeignKey(Author, on_delete=models.CASCADE, null=True)
+    createddate = models.DateField(default=now)
+    updateddate = models.DateTimeField(null=True)
+
 class BookSubmissions(models.Model):
     idbook = models.ForeignKey(Books, on_delete=models.CASCADE, null=True)
     personid = models.ForeignKey('persons.users', on_delete=models.CASCADE, null=True)
@@ -50,14 +61,3 @@ class BookSubmissions(models.Model):
     createddate = models.DateField(default=now)
     returndate = models.DateField(null=True)
     updatedby = models.CharField(max_length=10)
-
-class Author(models.Model):
-    name = models.CharField(max_length=255)
-    createddate = models.DateField(default=now)
-    updateddate = models.DateTimeField(null=True)
-
-class BookMappingAuthor(models.Model):
-    idbook = models.ForeignKey(Books, on_delete=models.CASCADE, null=True)
-    idauthor = models.ForeignKey(Author, on_delete=models.CASCADE, null=True)
-    createddate = models.DateField(default=now)
-    updateddate = models.DateTimeField(null=True)

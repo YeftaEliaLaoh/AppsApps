@@ -1,28 +1,11 @@
 from django.db.models import F
-from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework import generics
-from .serializer import BooksSerializer, BookCategorySerializer, PublisherSerializer
-from .models import  Books, BookCategory, BookMappingAuthor, Publisher
-
-class 	BooksCreateApi(generics.CreateAPIView):
-	queryset = Books.objects.all()
-	serializer_class = BooksSerializer
-
-class BooksApi(generics.ListAPIView):
-	queryset = Books.objects.all()
-	serializer_class = BooksSerializer
-
-class BooksUpdateApi(generics.RetrieveUpdateAPIView):
-	queryset = Books.objects.all()
-	serializer_class = BooksSerializer
-
-class BooksDeleteApi(generics.DestroyAPIView):
-	queryset = Books.objects.all()
-	serializer_class = BooksSerializer
+from .serializer import BookCategorySerializer, LanguageSerializer, PublisherSerializer,  BooksSerializer
+from .models import BookCategory, BookMappingAuthor, Language, Publisher, Books
 
 @csrf_exempt
 def bookCategory_list(request):
@@ -69,6 +52,44 @@ def bookCategory_detail(request, pk):
 		return HttpResponse(status=204)
 
 @csrf_exempt
+def language_list(request):
+	if request.method == 'GET':
+		language = Language.objects.all()
+		serializer = LanguageSerializer(language, many=True)
+		return JsonResponse(serializer.data, safe=False)
+
+	elif request.method == 'POST':
+		data = JSONParser().parse(request)
+		serializer = LanguageSerializer(data=data)
+		if serializer.is_valid():
+			serializer.save()
+			return JsonResponse(serializer.data, status=201)
+		return JsonResponse(serializer.errors, status=400)
+
+@csrf_exempt
+def language_detail(request, pk):
+	try:
+		language = Language.objects.get(pk=pk)
+	except Language.DoesNotExist:
+		return HttpResponse(status=404)
+
+	if request.method == 'GET':
+		serializer = LanguageSerializer(language)
+		return JsonResponse(serializer.data)
+
+	elif request.method == 'PUT':
+		data = JSONParser().parse(request)
+		serializer = LanguageSerializer(language, data=data)
+		if serializer.is_valid():
+			serializer.save()
+			return JsonResponse(serializer.data)
+		return JsonResponse(serializer.errors, status=400)
+
+	elif request.method == 'DELETE':
+		language.delete()
+		return HttpResponse(status=204)
+		
+@csrf_exempt
 def publisher_list(request):
 	if request.method == 'GET':
 		publisher = Publisher.objects.all()
@@ -105,7 +126,23 @@ def publisher_detail(request, pk):
 	elif request.method == 'DELETE':
 		publisher.delete()
 		return HttpResponse(status=204)
-	
+
+class BooksCreateApi(generics.CreateAPIView):
+	queryset = Books.objects.all()
+	serializer_class = BooksSerializer
+
+class BooksApi(generics.ListAPIView):
+	queryset = Books.objects.all()
+	serializer_class = BooksSerializer
+
+class BooksUpdateApi(generics.RetrieveUpdateAPIView):
+	queryset = Books.objects.all()
+	serializer_class = BooksSerializer
+
+class BooksDeleteApi(generics.DestroyAPIView):
+	queryset = Books.objects.all()
+	serializer_class = BooksSerializer	
+
 def books_retrieveall(request):
 	books = Books.objects.all().select_related("idbookcategory").values(useruid=F("idbookcategory__name"),seruid=F("name"))
 	print(str(books.query))

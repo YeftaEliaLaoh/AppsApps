@@ -1,0 +1,9 @@
+appsapps/__pycache__/
+administrasi/migrations/
+administrasi/__pycache__/
+perpustakaan/migrations/
+perpustakaan/__pycache__/
+persons/migrations/
+persons/__pycache__/
+places/migrations/
+places/__pycache__/

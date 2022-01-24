@@ -1,7 +1,7 @@
 from rest_framework import  serializers
-from .models import Gereja
+from .models import Location
 
-class GerejaSerializer(serializers.ModelSerializer):
+class LocationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Gereja
+        model = Location
         fields = '__all__'

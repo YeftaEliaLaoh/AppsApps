@@ -1,7 +1,7 @@
 from django.urls import path
-from persons import views
+from places import views
 
 urlpatterns = [
-    path('place',views.gereja_list),
-    path('place/<int:pk>/', views.gereja_detail),
+    path('location',views.location_list),
+    path('location/<int:pk>/', views.location_detail),
 ]

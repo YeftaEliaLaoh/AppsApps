@@ -1,5 +1,5 @@
 from django.urls import path
-from persons import views
+from administrasi import views
 
 urlpatterns = [
     path('otp',views.otp_list),

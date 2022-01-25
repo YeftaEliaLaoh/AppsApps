@@ -8,7 +8,7 @@ urlpatterns = [
     path('bookcategories/', views.bookCategory_list),
     path('bookcategory/<int:pk>/', views.bookCategory_detail),
     path('languages/', views.language_list),
-    path('language/<int:pk>/', views.language_detail),
+    path('language/<str:pk>/', views.language_detail),
     path('publishers/', views.publisher_list),
     path('publisher/<int:pk>/', views.publisher_detail),
     path('books',BooksApi.as_view()),

@@ -20,4 +20,6 @@ urlpatterns = [
     #path('admin/', admin.site.urls),
     path('perpustakaan/', include('perpustakaan.urls')),
     path('persons/', include('persons.urls')),
+    path('places/', include('places.urls')),
+    path('administrasi/', include('administrasi.urls')),
 ]

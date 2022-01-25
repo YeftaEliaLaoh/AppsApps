@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.timezone import now
 
-from places.models import Location
+from places.models import Locations
 
 class Author(models.Model):
     name = models.CharField(max_length=255)
@@ -13,7 +13,7 @@ class BookCategory(models.Model):
     createddate = models.DateTimeField(default=now)
     updateddate = models.DateTimeField(null=True)
 
-class Language(models.Model):
+class Languages(models.Model):
     id = models.CharField(primary_key=True, max_length=255)
     name = models.CharField(max_length=255)
     createddate = models.DateField(default=now)
@@ -26,9 +26,9 @@ class Publisher(models.Model):
 
 class Books(models.Model):
     idbookcategory = models.ForeignKey(BookCategory, on_delete=models.CASCADE, null=True)
-    idlanguage = models.ForeignKey(Language, on_delete=models.CASCADE, null=True)
+    idlanguage = models.ForeignKey(Languages, on_delete=models.CASCADE, null=True)
     idpublisher = models.ForeignKey(Publisher, on_delete=models.CASCADE, null=True)
-    idlocation = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
+    idlocation = models.ForeignKey(Locations, on_delete=models.CASCADE, null=True)
     barcode = models.CharField(max_length=255)
     kodelama = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
@@ -54,7 +54,7 @@ class BookMappingAuthor(models.Model):
 
 class BookSubmissions(models.Model):
     idbook = models.ForeignKey(Books, on_delete=models.CASCADE, null=True)
-    personid = models.ForeignKey('persons.users', on_delete=models.CASCADE, null=True)
+    memberid = models.ForeignKey('persons.members', on_delete=models.CASCADE, null=True)
     price = models.IntegerField(null=True)
     approveddate = models.DateField(null=True)
     canceldate = models.DateField(null=True)

@@ -2,8 +2,8 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-from .models import Kebaktian, Kelas, Users, Roles
-from .serializer import KebaktianSerializer, KelasSerializer, RolesSerializer, UsersSerializer
+from .models import Kebaktian, Kelas, Members, MemberTypes
+from .serializer import KebaktianSerializer, KelasSerializer, MemberTypesSerializer, MembersSerializer
 
 @csrf_exempt
 def kebaktian_list(request):
@@ -82,79 +82,79 @@ def kelas_detail(request, pk):
 		return HttpResponse(status=204)
 
 @csrf_exempt
-def roles_list(request):
+def membertypes_list(request):
 	if request.method == 'GET':
-		roles = Roles.objects.all()
-		serializer = RolesSerializer(roles, many=True)
+		membertypes = MemberTypes.objects.all()
+		serializer = MemberTypesSerializer(membertypes, many=True)
 		return JsonResponse(serializer.data, safe=False)
 
 	elif request.method == 'POST':
 		data = JSONParser().parse(request)
-		serializer = RolesSerializer(data=data)
+		serializer = MemberTypesSerializer(data=data)
 		if serializer.is_valid():
 			serializer.save()
 			return JsonResponse(serializer.data, status=201)
 		return JsonResponse(serializer.errors, status=400)
 
 @csrf_exempt
-def roles_detail(request, pk):
+def membertypes_detail(request, pk):
 	try:
-		roles = Roles.objects.get(pk=pk)
-	except Roles.DoesNotExist:
+		membertypes = MemberTypes.objects.get(pk=pk)
+	except MemberTypes.DoesNotExist:
 		return HttpResponse(status=404)
 
 	if request.method == 'GET':
-		serializer = RolesSerializer(roles)
+		serializer = MemberTypesSerializer(membertypes)
 		return JsonResponse(serializer.data)
 
 	elif request.method == 'PUT':
 		data = JSONParser().parse(request)
-		serializer = RolesSerializer(roles, data=data)
+		serializer = MemberTypesSerializer(membertypes, data=data)
 		if serializer.is_valid():
 			serializer.save()
 			return JsonResponse(serializer.data)
 		return JsonResponse(serializer.errors, status=400)
 
 	elif request.method == 'DELETE':
-		roles.delete()
+		membertypes.delete()
 		return HttpResponse(status=204)
 
 @csrf_exempt
-def users_list(request):
+def members_list(request):
 	if request.method == 'GET':
-		publisher = Users.objects.all()
-		serializer = UsersSerializer(publisher, many=True)
+		members = Members.objects.all()
+		serializer = MembersSerializer(members, many=True)
 		return JsonResponse(serializer.data, safe=False)
 
 	elif request.method == 'POST':
 		data = JSONParser().parse(request)
-		serializer = UsersSerializer(data=data)
+		serializer = MembersSerializer(data=data)
 		if serializer.is_valid():
 			serializer.save()
 			return JsonResponse(serializer.data, status=201)
 		return JsonResponse(serializer.errors, status=400)
 
 @csrf_exempt
-def users_detail(request, pk):
+def members_detail(request, pk):
 	try:
-		language = Users.objects.get(pk=pk)
-	except Users.DoesNotExist:
+		members = Members.objects.get(pk=pk)
+	except Members.DoesNotExist:
 		return HttpResponse(status=404)
 
 	if request.method == 'GET':
-		serializer = UsersSerializer(language)
+		serializer = MembersSerializer(members)
 		return JsonResponse(serializer.data)
 
 	elif request.method == 'PUT':
 		data = JSONParser().parse(request)
-		serializer = UsersSerializer(language, data=data)
+		serializer = MembersSerializer(members, data=data)
 		if serializer.is_valid():
 			serializer.save()
 			return JsonResponse(serializer.data)
 		return JsonResponse(serializer.errors, status=400)
 
 	elif request.method == 'DELETE':
-		language.delete()
+		members.delete()
 		return HttpResponse(status=204)
 
 @csrf_exempt
@@ -173,4 +173,10 @@ def user_login(request):
 @csrf_exempt
 def user_logout(request):
 	logout(request)
+	return HttpResponse(status=200)
+
+@csrf_exempt
+def member_login(request):
+	data = JSONParser().parse(request)
+	mobilenumber = data["mobilenumber"]
 	return HttpResponse(status=200)

@@ -4,8 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework import generics
-from .serializer import AuthorSerializer, BookCategorySerializer, LanguageSerializer, PublisherSerializer,  BooksSerializer
-from .models import Author, BookCategory, Language, Publisher, Books, BookMappingAuthor
+from .serializer import AuthorSerializer, BookCategorySerializer, LanguagesSerializer, PublisherSerializer,  BooksSerializer
+from .models import Author, BookCategory, Languages, Publisher, Books, BookMappingAuthor
 
 @csrf_exempt
 def author_list(request):
@@ -92,13 +92,13 @@ def bookCategory_detail(request, pk):
 @csrf_exempt
 def language_list(request):
 	if request.method == 'GET':
-		language = Language.objects.all()
-		serializer = LanguageSerializer(language, many=True)
+		languages = Languages.objects.all()
+		serializer = LanguagesSerializer(languages, many=True)
 		return JsonResponse(serializer.data, safe=False)
 
 	elif request.method == 'POST':
 		data = JSONParser().parse(request)
-		serializer = LanguageSerializer(data=data)
+		serializer = LanguagesSerializer(data=data)
 		if serializer.is_valid():
 			serializer.save()
 			return JsonResponse(serializer.data, status=201)
@@ -107,24 +107,24 @@ def language_list(request):
 @csrf_exempt
 def language_detail(request, pk):
 	try:
-		language = Language.objects.get(pk=pk)
-	except Language.DoesNotExist:
+		languages = Languages.objects.get(pk=pk)
+	except Languages.DoesNotExist:
 		return HttpResponse(status=404)
 
 	if request.method == 'GET':
-		serializer = LanguageSerializer(language)
+		serializer = LanguagesSerializer(languages)
 		return JsonResponse(serializer.data)
 
 	elif request.method == 'PUT':
 		data = JSONParser().parse(request)
-		serializer = LanguageSerializer(language, data=data)
+		serializer = LanguagesSerializer(languages, data=data)
 		if serializer.is_valid():
 			serializer.save()
 			return JsonResponse(serializer.data)
 		return JsonResponse(serializer.errors, status=400)
 
 	elif request.method == 'DELETE':
-		language.delete()
+		languages.delete()
 		return HttpResponse(status=204)
 
 @csrf_exempt

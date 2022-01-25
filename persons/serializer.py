@@ -1,5 +1,5 @@
 from rest_framework import  serializers
-from .models import Kebaktian, Kelas, Roles, Users
+from .models import Kebaktian, Kelas, MemberTypes, Members
 
 class KebaktianSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,12 +11,12 @@ class KelasSerializer(serializers.ModelSerializer):
         model = Kelas
         fields = '__all__'
 
-class RolesSerializer(serializers.ModelSerializer):
+class MemberTypesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Roles
+        model = MemberTypes
         fields = '__all__'
 
-class UsersSerializer(serializers.ModelSerializer):
+class MembersSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Users
+        model = Members
         fields = '__all__'

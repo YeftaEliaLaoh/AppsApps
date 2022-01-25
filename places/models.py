@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.timezone import now
 
-class Location(models.Model):
+class Locations(models.Model):
     id = models.CharField(primary_key=True, max_length=255)
     name = models.CharField(max_length=255)
     alamat = models.CharField(max_length=255,null=True)

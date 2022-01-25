@@ -2,6 +2,6 @@ from django.urls import path
 from places import views
 
 urlpatterns = [
-    path('location',views.location_list),
-    path('location/<int:pk>/', views.location_detail),
+    path('locations',views.location_list),
+    path('location/<str:pk>/', views.location_detail),
 ]
